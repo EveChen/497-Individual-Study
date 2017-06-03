@@ -203,5 +203,59 @@ AUC_xgboost
 
 
 ***
+###3. Using randomForest package
 
+####Step1: Load our data set 
+```{r, message = F}
+dat <- read.csv("bank.csv")
+dat$y <- as.factor(dat$y)
+```
+
+####Step2: Split our data into training and test data set
+
+```{r}
+train_sample = sample(nrow(dat), size = nrow(dat)*0.6)
+train_dat = dat[train_sample,]
+test_dat = dat[-train_sample,]
+```
+
+
+####Step3: Apply random forest model 
+```{r}
+system.time({
+  md_rf <- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
+                  ytest = test_dat$y, xtest = test_dat[, -ncol(test_dat)],
+                  ntree = 200, mtry = 3, keep.forest = TRUE)
+
+})
+```
+
+####Step4: Check variable importance
+```{r}
+varImpPlot(md_rf,type=2)
+``` 
+
+***
+
+###C. Comparisons
+####(1.) Compare with different packages
+
+####(2.) Compare random forest with logistic model 
+* ####As for the processing time, we can easily see that glmnet performs slightly better than h2o in this data set
+* ####As for the auc, if we insist to use lasso within both the functions, we find that h2o performs higher auc in comparison with glmnet package.
+
+Packages         | AUC   | Processing Time (/sec) 
+-----------------|-------|------------------
+glmnet (w/ lasso)|0.9037  | 0.23
+glmnet (w/o lasso)| 0.875|0.18
+h2o (w/lasso)    |0.9041  |1.51
+h2o (w/o lasso)  |0.8687  |0.52
+
+
+
+
+
+
+
+***
 
