@@ -181,42 +181,9 @@ $(document).ready(function () {
 </div>
 <div id="here-are-some-pros-and-cons-that-i-saw-from-the-textbook-and-quora" class="section level4">
 <h4>Here are some pros and cons that I saw from the textbook and Quora</h4>
-<table>
-<thead>
-<tr class="header">
-<th>Models</th>
-<th>Random Forest</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Pros</td>
-<td>1. Fast to train our training data</td>
-</tr>
-<tr class="even">
-<td>2. High accuracy</td>
-</tr>
-<tr class="odd">
-<td>3. Automatically Generalized our data within the process</td>
-</tr>
-<tr class="even">
-<td>4.</td>
-</tr>
-<tr class="odd">
-<td>Cons</td>
-<td>1. Inconsistent - because it’s classification method</td>
-</tr>
-<tr class="even">
-<td>2. Hard to interpret the results</td>
-</tr>
-<tr class="odd">
-<td>3. Slow to predict our testing data</td>
-</tr>
-<tr class="even">
-<td>4. Need high computability, which may be expensive</td>
-</tr>
-</tbody>
-</table>
+<p>Random Forest Model<br />
+—-|———————————————————– Pros| | 1. Fast to train our training data | 2. High accuracy | 3. Automatically Generalized our data within the process Cons| | 1. Inconsistent - because it’s classification method | 2. Hard to interpret the results | 3. Slow to predict our testing data | 4. Need high computability, which may be expensive</p>
+<hr />
 </div>
 <div id="same-as-the-logistic-regression-i-did-last-week-i-would-like-to-take-a-look-about-our-data-set-before-i-use-r-h2o-and-xgboost-to-run-random-forest-models." class="section level4">
 <h4>Same as the logistic regression I did last week, I would like to take a look about our data set before I use <strong>R</strong>, <strong>H2O</strong> and <strong>XGBoost</strong> to run random forest models.</h4>
@@ -285,12 +252,12 @@ str(dat)</code></pre>
 <pre><code>##  Connection successful!
 ## 
 ## R is connected to the H2O cluster: 
-##     H2O cluster uptime:         31 seconds 168 milliseconds 
+##     H2O cluster uptime:         13 minutes 59 seconds 
 ##     H2O cluster version:        3.10.4.6 
 ##     H2O cluster version age:    1 month and 6 days  
 ##     H2O cluster name:           H2O_started_from_R_Eve_nau333 
 ##     H2O cluster total nodes:    1 
-##     H2O cluster total memory:   3.32 GB 
+##     H2O cluster total memory:   3.28 GB 
 ##     H2O cluster total cores:    4 
 ##     H2O cluster allowed cores:  4 
 ##     H2O cluster healthy:        TRUE 
@@ -306,6 +273,8 @@ str(dat)</code></pre>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
+  |                                                                       
+  |=============================================================    |  94%
   |                                                                       
   |=================================================================| 100%</code></pre>
 </div>
@@ -326,35 +295,91 @@ Xnames &lt;- names(dx_train)[which(names(dx_train)!=&quot;y&quot;)]</code></pre>
   |                                                                       
   |                                                                 |   0%
   |                                                                       
-  |==                                                               |   2%
+  |=                                                                |   1%
   |                                                                       
-  |===                                                              |   5%
+  |===                                                              |   4%
   |                                                                       
-  |=====                                                            |   8%
+  |====                                                             |   6%
   |                                                                       
-  |============                                                     |  19%
+  |======                                                           |   9%
   |                                                                       
-  |====================                                             |  32%
+  |=========                                                        |  14%
   |                                                                       
-  |=============================                                    |  44%
+  |===============                                                  |  23%
   |                                                                       
-  |===================================                              |  54%
+  |======================                                           |  34%
   |                                                                       
-  |===========================================                      |  66%
+  |===============================                                  |  47%
   |                                                                       
-  |==================================================               |  78%
+  |=================================                                |  51%
   |                                                                       
-  |==========================================================       |  90%
+  |==========================================                       |  64%
+  |                                                                       
+  |==================================================               |  76%
+  |                                                                       
+  |==========================================================       |  89%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.35    0.01   15.82</code></pre>
+##    0.37    0.00   15.62</code></pre>
 </div>
 <div id="step5-prediction-auc" class="section level4">
 <h4>Step5: Prediction &amp; AUC</h4>
 <pre class="r"><code>auc_h2o &lt;- h2o.auc(h2o.performance(md_h2o, dx_test))
 auc_h2o</code></pre>
-<pre><code>## [1] 0.9325446</code></pre>
+<pre><code>## [1] 0.9315171</code></pre>
+<hr />
+</div>
+</div>
+<div id="brief-conclusion-for-h2o-package" class="section level3">
+<h3>Brief conclusion for h2o package</h3>
+<div id="section" class="section level4">
+<h4></h4>
+<hr />
+</div>
+</div>
+<div id="using-xgboost-package" class="section level3">
+<h3>2. Using XGBoost package</h3>
+<div id="step1-load-our-data-set" class="section level4">
+<h4>Step1: Load our data set</h4>
+<pre class="r"><code>d &lt;- read_csv(&quot;bank.csv&quot;)</code></pre>
+</div>
+<div id="step2-shuffle-our-data-and-split-into-training-and-test-data-set" class="section level4">
+<h4>Step2: Shuffle our data and split into training and test data set</h4>
+<pre class="r"><code>set.seed(123)
+N &lt;- nrow(d)
+idx &lt;- sample(1:N, 0.6*N)
+d_train &lt;- d[idx,]
+d_test &lt;- d[-idx,]</code></pre>
+</div>
+<div id="step3-sparse-our-original-data-to-make-categorical-features-become-numeric-features" class="section level4">
+<h4>Step3: Sparse our original data to make categorical features become numeric features</h4>
+<pre class="r"><code>X &lt;- Matrix::sparse.model.matrix(y ~ . - 1, data = d)
+X_train &lt;- X[idx,]
+X_test &lt;- X[-idx,]</code></pre>
+</div>
+<div id="step4-apply-random-forest-model" class="section level4">
+<h4>Step4: Apply random forest model</h4>
+<pre class="r"><code>system.time({
+  n_proc &lt;- parallel::detectCores()
+  md_xgboost &lt;- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
+                nthread = n_proc, nround = 1, max_depth = 20,
+                num_parallel_tree = 200, subsample = 0.632,
+                colsample_bytree = 1/sqrt(length(X_train@x)/nrow(X_train)),
+                save_period = NULL)
+})</code></pre>
+<pre><code>## [1]  train-rmse:0.399155</code></pre>
+<pre><code>##    user  system elapsed 
+##   10.20    1.34    4.52</code></pre>
+</div>
+<div id="step5-make-prediction-and-calculate-auc" class="section level4">
+<h4>Step5: Make prediction and calculate AUC</h4>
+<pre class="r"><code>phat_xgboost &lt;- predict(md_xgboost, newdata = X_test)
+rocr_pred_xgboost &lt;- prediction(phat_xgboost, d_test$y)
+AUC_xgboost &lt;- performance(rocr_pred_xgboost, &quot;auc&quot;)@y.values[[1]]
+AUC_xgboost</code></pre>
+<pre><code>## [1] 0.8991648</code></pre>
+<hr />
 </div>
 </div>
 </div>

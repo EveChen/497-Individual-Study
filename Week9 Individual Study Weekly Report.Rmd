@@ -52,19 +52,20 @@ setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
   
 
 ####Here are some pros and cons that I saw from the textbook and Quora
-Models           | Random Forest
------------------|----------------------------------------------
-Pros| 1. Fast to train our training data
+Random Forest Model           
+----|-----------------------------------------------------------
+Pros| 
+    | 1. Fast to train our training data
     | 2. High accuracy
     | 3. Automatically Generalized our data within the process
-    | 4. 
-Cons| 1. Inconsistent - because it's classification method
+Cons| 
+    | 1. Inconsistent - because it's classification method
     | 2. Hard to interpret the results
     | 3. Slow to predict our testing data
     | 4. Need high computability, which may be expensive
     
 
-
+***
 
 
 ####Same as the logistic regression I did last week, I would like to take a look about our data set before I use **R**, **H2O** and **XGBoost** to run random forest models.
@@ -148,5 +149,59 @@ auc_h2o <- h2o.auc(h2o.performance(md_h2o, dx_test))
 auc_h2o
 ```
 
+
+***
+
+###Brief conclusion for h2o package
+####
+
+
+***
+
+###2. Using XGBoost package
+
+####Step1: Load our data set 
+```{r, message = F}
+d <- read_csv("bank.csv")
+```
+
+####Step2: Shuffle our data and split into training and test data set
+
+```{r}
+set.seed(123)
+N <- nrow(d)
+idx <- sample(1:N, 0.6*N)
+d_train <- d[idx,]
+d_test <- d[-idx,]
+```
+
+####Step3: Sparse our original data to make categorical features become numeric features
+```{r}
+X <- Matrix::sparse.model.matrix(y ~ . - 1, data = d)
+X_train <- X[idx,]
+X_test <- X[-idx,]
+```
+
+####Step4: Apply random forest model 
+```{r}
+system.time({
+  n_proc <- parallel::detectCores()
+  md_xgboost <- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
+                nthread = n_proc, nround = 1, max_depth = 20,
+                num_parallel_tree = 200, subsample = 0.632,
+                colsample_bytree = 1/sqrt(length(X_train@x)/nrow(X_train)),
+                save_period = NULL)
+})
+```
+####Step5: Make prediction and calculate AUC
+```{r}
+phat_xgboost <- predict(md_xgboost, newdata = X_test)
+rocr_pred_xgboost <- prediction(phat_xgboost, d_test$y)
+AUC_xgboost <- performance(rocr_pred_xgboost, "auc")@y.values[[1]]
+AUC_xgboost
+```
+
+
+***
 
 
