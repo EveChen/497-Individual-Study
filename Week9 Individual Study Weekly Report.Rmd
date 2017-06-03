@@ -54,11 +54,11 @@ setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
 ####Here are some pros and cons that I saw from the textbook and Quora
 Random Forest Model           
 ----|-----------------------------------------------------------
-Pros| 
+Pros|-----------------------------------------------------------
     | 1. Fast to train our training data
     | 2. High accuracy
     | 3. Automatically Generalized our data within the process
-Cons| 
+Cons| -----------------------------------------------------------
     | 1. Inconsistent - because it's classification method
     | 2. Hard to interpret the results
     | 3. Slow to predict our testing data
@@ -138,15 +138,35 @@ Xnames <- names(dx_train)[which(names(dx_train)!="y")]
 
 ####Step4: Apply a random forest model 
 ```{r}
+#With 100 trees
 system.time({
-  md_h2o <- h2o.randomForest(x = Xnames, y = "y", training_frame = dx_train, ntrees = 200)
+  md_h2o1 <- h2o.randomForest(x = Xnames, y = "y", training_frame = dx_train, ntrees = 100)
+})
+```
+```{r}
+#With 200 trees
+system.time({
+  md_h2o2 <- h2o.randomForest(x = Xnames, y = "y", training_frame = dx_train, ntrees = 200)
+})
+```
+```{r}
+#With 300 trees
+system.time({
+  md_h2o3 <- h2o.randomForest(x = Xnames, y = "y", training_frame = dx_train, ntrees = 300)
 })
 ```
 
 ####Step5: Prediction & AUC
 ```{r}
-auc_h2o <- h2o.auc(h2o.performance(md_h2o, dx_test))
-auc_h2o
+#AUC for 100 trees
+auc_h2o1 <- h2o.auc(h2o.performance(md_h2o1, dx_test))
+auc_h2o1
+#AUC for 200 trees
+auc_h2o2 <- h2o.auc(h2o.performance(md_h2o2, dx_test))
+auc_h2o2
+#AUC for 300 trees
+auc_h2o3 <- h2o.auc(h2o.performance(md_h2o3, dx_test))
+auc_h2o3
 ```
 
 
@@ -184,25 +204,71 @@ X_test <- X[-idx,]
 
 ####Step4: Apply random forest model 
 ```{r}
+#Build 100 trees
 system.time({
   n_proc <- parallel::detectCores()
-  md_xgboost <- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
+  md_xgboost1 <- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
+                nthread = n_proc, nround = 1, max_depth = 20,
+                num_parallel_tree = 100, subsample = 0.632,
+                colsample_bytree = 1/sqrt(length(X_train@x)/nrow(X_train)),
+                save_period = NULL)
+})
+```
+
+```{r}
+#Build 200 trees
+system.time({
+  n_proc <- parallel::detectCores()
+  md_xgboost2 <- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
                 nthread = n_proc, nround = 1, max_depth = 20,
                 num_parallel_tree = 200, subsample = 0.632,
                 colsample_bytree = 1/sqrt(length(X_train@x)/nrow(X_train)),
                 save_period = NULL)
 })
 ```
+
+```{r}
+#Build 300 trees
+system.time({
+  n_proc <- parallel::detectCores()
+  md_xgboost3 <- xgboost(data = X_train, label = ifelse(d_train$y=='Y',1,0),
+                nthread = n_proc, nround = 1, max_depth = 20,
+                num_parallel_tree = 300, subsample = 0.632,
+                colsample_bytree = 1/sqrt(length(X_train@x)/nrow(X_train)),
+                save_period = NULL)
+})
+```
+
 ####Step5: Make prediction and calculate AUC
 ```{r}
-phat_xgboost <- predict(md_xgboost, newdata = X_test)
-rocr_pred_xgboost <- prediction(phat_xgboost, d_test$y)
-AUC_xgboost <- performance(rocr_pred_xgboost, "auc")@y.values[[1]]
-AUC_xgboost
+#AUC for 100 trees
+phat_xgboost1 <- predict(md_xgboost1, newdata = X_test)
+rocr_pred_xgboost1 <- prediction(phat_xgboost1, d_test$y)
+AUC_xgboost1 <- performance(rocr_pred_xgboost1, "auc")@y.values[[1]]
+AUC_xgboost1
+```
+
+```{r}
+#AUC for 200 trees
+phat_xgboost2 <- predict(md_xgboost2, newdata = X_test)
+rocr_pred_xgboost2 <- prediction(phat_xgboost2, d_test$y)
+AUC_xgboost2 <- performance(rocr_pred_xgboost2, "auc")@y.values[[1]]
+AUC_xgboost2
+```
+
+```{r}
+#AUC for 300 trees
+phat_xgboost3 <- predict(md_xgboost3, newdata = X_test)
+rocr_pred_xgboost3 <- prediction(phat_xgboost3, d_test$y)
+AUC_xgboost3 <- performance(rocr_pred_xgboost3, "auc")@y.values[[1]]
+AUC_xgboost3
 ```
 
 
+
 ***
+
+
 ###3. Using randomForest package
 
 ####Step1: Load our data set 
@@ -222,17 +288,45 @@ test_dat = dat[-train_sample,]
 
 ####Step3: Apply random forest model 
 ```{r}
+#Build 100 trees
 system.time({
-  md_rf <- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
+  md_rf1 <- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
+                  ytest = test_dat$y, xtest = test_dat[, -ncol(test_dat)],
+                  ntree = 100, mtry = 3, keep.forest = TRUE)
+
+})
+md_rf1
+```
+
+```{r}
+#Build 200 trees
+system.time({
+  md_rf2 <- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
                   ytest = test_dat$y, xtest = test_dat[, -ncol(test_dat)],
                   ntree = 200, mtry = 3, keep.forest = TRUE)
 
 })
+md_rf2
 ```
+
+```{r}
+#Build 300 trees
+system.time({
+  md_rf3 <- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
+                  ytest = test_dat$y, xtest = test_dat[, -ncol(test_dat)],
+                  ntree = 300, mtry = 3, keep.forest = TRUE)
+
+})
+md_rf3
+```
+
+
 
 ####Step4: Check variable importance
 ```{r}
-varImpPlot(md_rf,type=2)
+varImpPlot(md_rf1,type=2)
+varImpPlot(md_rf2,type=2)
+varImpPlot(md_rf3,type=2)
 ``` 
 
 ***
