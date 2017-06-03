@@ -34,13 +34,13 @@ setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
 
 ###A. Brief introduction of What I learn this week
 
-####Random forest is a popular method to solve different kinds of machine learning tasks. Due to it's high accuracy, it seems to me that it's more prone to a predictive model instead of a description model. Basically, random forest does two things:
+#####Random forest is a popular method to solve different kinds of machine learning tasks. Due to it's high accuracy, it seems to me that it's more prone to a predictive model instead of a description model. Basically, random forest does two things:
   * Randomly choose different features to build different trees
   * Calculate the average value of all the trees it created previously
 
-####After we apply random forest model to the test data set, We usually can build up confusion matrix, AUC, ROC curve and variable importance to see how does our model perform. Also, there is no limitation about how many trees that we can build. The only concern is the computability of our desktop. That is, random forest seldom overfits in our training set.(Usually, an overfitting will happen if we have only few features to train.) 
+#####After we apply random forest model to the test data set, We usually can build up confusion matrix, AUC, ROC curve and variable importance to see how does our model perform. Also, there is no limitation about how many trees that we can build. The only concern is the computability of our desktop. That is, random forest seldom overfits in our training set.(Usually, an overfitting will happen if we have only few features to train.) 
 
-####The general steps are
+#####The general steps are
   * Manipulate our data set (attention to features which are factors)
   * Train the random forest model
   * Predict a test data set
@@ -50,25 +50,25 @@ setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
   * Check the accuracy, confusion matrix, partial dependence
   * Apply other methods to double check if they all come to the same conclusion
   
+***
 
-####Here are some pros and cons that I saw from the textbook and Quora
-Random Forest Model           
+#####Here are some pros and cons that I saw from the textbook and Quora
+Random Forest Model |          
 ----|-----------------------------------------------------------
-Pros|-----------------------------------------------------------
+**Pros**|
     | 1. Fast to train our training data
     | 2. High accuracy
     | 3. Automatically Generalized our data within the process
-Cons| -----------------------------------------------------------
+**Cons**| 
     | 1. Inconsistent - because it's classification method
     | 2. Hard to interpret the results
     | 3. Slow to predict our testing data
     | 4. Need high computability, which may be expensive
     
-
 ***
 
 
-####Same as the logistic regression I did last week, I would like to take a look about our data set before I use **R**, **H2O** and **XGBoost** to run random forest models.
+#####Same as the logistic regression I did last week, I would like to take a look about our data set before I use **R**, **H2O** and **XGBoost** to run random forest models.
 
 ```{r, include = F}
 ###1. Setup
@@ -82,7 +82,7 @@ gc(reset=TRUE)
 setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
 ```
 
-###1. Load Packages
+Step1: Load Packages
 ```{r, message = F}
 library(readr)   #Use to read data
 library(glmnet)  #Use to apply logistic regression
@@ -92,15 +92,15 @@ library(xgboost) #Use to run random forest model
 library(randomForest) #Use to run random forest model
 ```
 
-###2. Load data set
-####This **bank marketing** data set is provided by a Portuguese banking institution. It takes records on every phone calls they make to promote their product - term deposit. Our goal is to predict if a customer will subsribe a product after they make phone calls.
+Step2: Load data set
+This **bank marketing** data set is provided by a Portuguese banking institution. It takes records on every phone calls they make to promote their product - term deposit. Our goal is to predict if a customer will subsribe a product after they make phone calls.
 
 ```{r}
 dat <- read.csv("bank.csv")
 str(dat)
 ```
 
-####We totally have 45211 observations, 15 input variables and 1 output variables (y).
+We totally have 45211 observations, 15 input variables and 1 output variables (y).
 
 ```{r}
 head(dat, 3)
@@ -110,23 +110,23 @@ head(dat, 3)
 
 ***
 
-###B. Random Forest Model
+####B. Random Forest Model
   * Using h2o package
   * Using XGBoost package
   * Using randomForest package
 
-###1. Using h2o package
-####Step1: Initiate h2o package
+#####1. Using h2o package
+Step1: Initiate h2o package
 ```{r}
 h2o.init(nthreads=-1)
 ```
 
-####Step2: Load data set
+Step2: Load data set
 ```{r}
 dx <- h2o.importFile("bank.csv")
 ```
 
-####Step3: Split into training and test data sets (*h2o will automatically shuffle and generalize our data*)
+Step3: Split into training and test data sets (*h2o will automatically shuffle and generalize our data*)
 ```{r}
 dx_split <- h2o.splitFrame(dx, ratios = 0.6, seed = 123)
 dx_train <- dx_split[[1]]
@@ -136,7 +136,7 @@ Xnames <- names(dx_train)[which(names(dx_train)!="y")]
 ```
 
 
-####Step4: Apply a random forest model 
+Step4: Apply a random forest model 
 ```{r}
 #With 100 trees
 system.time({
@@ -156,7 +156,7 @@ system.time({
 })
 ```
 
-####Step5: Prediction & AUC
+Step5: Prediction & AUC
 ```{r}
 #AUC for 100 trees
 auc_h2o1 <- h2o.auc(h2o.performance(md_h2o1, dx_test))
@@ -169,23 +169,16 @@ auc_h2o3 <- h2o.auc(h2o.performance(md_h2o3, dx_test))
 auc_h2o3
 ```
 
-
 ***
 
-###Brief conclusion for h2o package
-####
+####2. Using XGBoost package
 
-
-***
-
-###2. Using XGBoost package
-
-####Step1: Load our data set 
+Step1: Load our data set 
 ```{r, message = F}
 d <- read_csv("bank.csv")
 ```
 
-####Step2: Shuffle our data and split into training and test data set
+Step2: Shuffle our data and split into training and test data set
 
 ```{r}
 set.seed(123)
@@ -195,14 +188,14 @@ d_train <- d[idx,]
 d_test <- d[-idx,]
 ```
 
-####Step3: Sparse our original data to make categorical features become numeric features
+Step3: Sparse our original data to make categorical features become numeric features
 ```{r}
 X <- Matrix::sparse.model.matrix(y ~ . - 1, data = d)
 X_train <- X[idx,]
 X_test <- X[-idx,]
 ```
 
-####Step4: Apply random forest model 
+Step4: Apply random forest model 
 ```{r}
 #Build 100 trees
 system.time({
@@ -239,7 +232,7 @@ system.time({
 })
 ```
 
-####Step5: Make prediction and calculate AUC
+Step5: Make prediction and calculate AUC
 ```{r}
 #AUC for 100 trees
 phat_xgboost1 <- predict(md_xgboost1, newdata = X_test)
@@ -269,15 +262,15 @@ AUC_xgboost3
 ***
 
 
-###3. Using randomForest package
+####3. Using randomForest package
 
-####Step1: Load our data set 
+Step1: Load our data set 
 ```{r, message = F}
 dat <- read.csv("bank.csv")
 dat$y <- as.factor(dat$y)
 ```
 
-####Step2: Split our data into training and test data set
+Step2: Split our data into training and test data set
 
 ```{r}
 train_sample = sample(nrow(dat), size = nrow(dat)*0.6)
@@ -286,7 +279,7 @@ test_dat = dat[-train_sample,]
 ```
 
 
-####Step3: Apply random forest model 
+Step3: Apply random forest model 
 ```{r}
 #Build 100 trees
 system.time({
@@ -322,7 +315,7 @@ md_rf3
 
 
 
-####Step4: Check variable importance
+Step4: Check variable importance
 ```{r}
 varImpPlot(md_rf1,type=2)
 varImpPlot(md_rf2,type=2)
@@ -332,11 +325,9 @@ varImpPlot(md_rf3,type=2)
 ***
 
 ###C. Comparisons
-####(1.) Compare with different packages
-
-####(2.) Compare random forest with logistic model 
-* ####As for the processing time, we can easily see that glmnet performs slightly better than h2o in this data set
-* ####As for the auc, if we insist to use lasso within both the functions, we find that h2o performs higher auc in comparison with glmnet package.
+####Compare random forest with logistic model 
+* #####As for the processing time, we can easily see that glmnet performs slightly better than h2o in this data set
+* #####As for the auc, if we insist to use lasso within both the functions, we find that h2o performs higher auc in comparison with glmnet package.
 
 Packages         | AUC   | Processing Time (/sec) 
 -----------------|-------|------------------

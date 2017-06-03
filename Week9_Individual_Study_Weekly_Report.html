@@ -156,18 +156,18 @@ $(document).ready(function () {
 </div>
 <div id="a.-brief-introduction-of-what-i-learn-this-week-1" class="section level3">
 <h3>A. Brief introduction of What I learn this week</h3>
-<div id="random-forest-is-a-popular-method-to-solve-different-kinds-of-machine-learning-tasks.-due-to-its-high-accuracy-it-seems-to-me-that-its-more-prone-to-a-predictive-model-instead-of-a-description-model.-basically-random-forest-does-two-things" class="section level4">
-<h4>Random forest is a popular method to solve different kinds of machine learning tasks. Due to it’s high accuracy, it seems to me that it’s more prone to a predictive model instead of a description model. Basically, random forest does two things:</h4>
+<div id="random-forest-is-a-popular-method-to-solve-different-kinds-of-machine-learning-tasks.-due-to-its-high-accuracy-it-seems-to-me-that-its-more-prone-to-a-predictive-model-instead-of-a-description-model.-basically-random-forest-does-two-things" class="section level5">
+<h5>Random forest is a popular method to solve different kinds of machine learning tasks. Due to it’s high accuracy, it seems to me that it’s more prone to a predictive model instead of a description model. Basically, random forest does two things:</h5>
 <ul>
 <li>Randomly choose different features to build different trees</li>
 <li>Calculate the average value of all the trees it created previously</li>
 </ul>
 </div>
-<div id="after-we-apply-random-forest-model-to-the-test-data-set-we-usually-can-build-up-confusion-matrix-auc-roc-curve-and-variable-importance-to-see-how-does-our-model-perform.-also-there-is-no-limitation-about-how-many-trees-that-we-can-build.-the-only-concern-is-the-computability-of-our-desktop.-that-is-random-forest-seldom-overfits-in-our-training-set.usually-an-overfitting-will-happen-if-we-have-only-few-features-to-train." class="section level4">
-<h4>After we apply random forest model to the test data set, We usually can build up confusion matrix, AUC, ROC curve and variable importance to see how does our model perform. Also, there is no limitation about how many trees that we can build. The only concern is the computability of our desktop. That is, random forest seldom overfits in our training set.(Usually, an overfitting will happen if we have only few features to train.)</h4>
+<div id="after-we-apply-random-forest-model-to-the-test-data-set-we-usually-can-build-up-confusion-matrix-auc-roc-curve-and-variable-importance-to-see-how-does-our-model-perform.-also-there-is-no-limitation-about-how-many-trees-that-we-can-build.-the-only-concern-is-the-computability-of-our-desktop.-that-is-random-forest-seldom-overfits-in-our-training-set.usually-an-overfitting-will-happen-if-we-have-only-few-features-to-train." class="section level5">
+<h5>After we apply random forest model to the test data set, We usually can build up confusion matrix, AUC, ROC curve and variable importance to see how does our model perform. Also, there is no limitation about how many trees that we can build. The only concern is the computability of our desktop. That is, random forest seldom overfits in our training set.(Usually, an overfitting will happen if we have only few features to train.)</h5>
 </div>
-<div id="the-general-steps-are" class="section level4">
-<h4>The general steps are</h4>
+<div id="the-general-steps-are" class="section level5">
+<h5>The general steps are</h5>
 <ul>
 <li>Manipulate our data set (attention to features which are factors)</li>
 <li>Train the random forest model</li>
@@ -179,29 +179,59 @@ $(document).ready(function () {
 <li>Apply other methods to double check if they all come to the same conclusion</li>
 </ul>
 </div>
-<div id="here-are-some-pros-and-cons-that-i-saw-from-the-textbook-and-quora" class="section level4">
-<h4>Here are some pros and cons that I saw from the textbook and Quora</h4>
-<p>Random Forest Model<br />
-—-|———————————————————– Pros|———————————————————– | 1. Fast to train our training data | 2. High accuracy | 3. Automatically Generalized our data within the process Cons| ———————————————————– | 1. Inconsistent - because it’s classification method | 2. Hard to interpret the results | 3. Slow to predict our testing data | 4. Need high computability, which may be expensive</p>
+<div id="here-are-some-pros-and-cons-that-i-saw-from-the-textbook-and-quora" class="section level5">
+<h5>Here are some pros and cons that I saw from the textbook and Quora</h5>
+<table>
+<thead>
+<tr class="header">
+<th>Random Forest Model</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pros</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1. Fast to train our training data</td>
+</tr>
+<tr class="odd">
+<td>2. High accuracy</td>
+</tr>
+<tr class="even">
+<td>3. Automatically Generalized our data within the process</td>
+</tr>
+<tr class="odd">
+<td><strong>Cons</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1. Inconsistent - because it’s classification method</td>
+</tr>
+<tr class="odd">
+<td>2. Hard to interpret the results</td>
+</tr>
+<tr class="even">
+<td>3. Slow to predict our testing data</td>
+</tr>
+<tr class="odd">
+<td>4. Need high computability, which may be expensive</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
-<div id="same-as-the-logistic-regression-i-did-last-week-i-would-like-to-take-a-look-about-our-data-set-before-i-use-r-h2o-and-xgboost-to-run-random-forest-models." class="section level4">
-<h4>Same as the logistic regression I did last week, I would like to take a look about our data set before I use <strong>R</strong>, <strong>H2O</strong> and <strong>XGBoost</strong> to run random forest models.</h4>
-</div>
-</div>
-<div id="load-packages" class="section level3">
-<h3>1. Load Packages</h3>
+<div id="same-as-the-logistic-regression-i-did-last-week-i-would-like-to-take-a-look-about-our-data-set-before-i-use-r-h2o-and-xgboost-to-run-random-forest-models." class="section level5">
+<h5>Same as the logistic regression I did last week, I would like to take a look about our data set before I use <strong>R</strong>, <strong>H2O</strong> and <strong>XGBoost</strong> to run random forest models.</h5>
+<p>Step1: Load Packages</p>
 <pre class="r"><code>library(readr)   #Use to read data
 library(glmnet)  #Use to apply logistic regression
 library(ROCR)    #Use to calcuate AUC
 library(h2o)     #Use to run logistic regression and random forest 
 library(xgboost) #Use to run random forest model
 library(randomForest) #Use to run random forest model</code></pre>
-</div>
-<div id="load-data-set" class="section level3">
-<h3>2. Load data set</h3>
-<div id="this-bank-marketing-data-set-is-provided-by-a-portuguese-banking-institution.-it-takes-records-on-every-phone-calls-they-make-to-promote-their-product---term-deposit.-our-goal-is-to-predict-if-a-customer-will-subsribe-a-product-after-they-make-phone-calls." class="section level4">
-<h4>This <strong>bank marketing</strong> data set is provided by a Portuguese banking institution. It takes records on every phone calls they make to promote their product - term deposit. Our goal is to predict if a customer will subsribe a product after they make phone calls.</h4>
+<p>Step2: Load data set This <strong>bank marketing</strong> data set is provided by a Portuguese banking institution. It takes records on every phone calls they make to promote their product - term deposit. Our goal is to predict if a customer will subsribe a product after they make phone calls.</p>
 <pre class="r"><code>dat &lt;- read.csv(&quot;bank.csv&quot;)
 str(dat)</code></pre>
 <pre><code>## 'data.frame':    45211 obs. of  16 variables:
@@ -221,9 +251,7 @@ str(dat)</code></pre>
 ##  $ previous : int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ poutcome : Factor w/ 4 levels &quot;failure&quot;,&quot;other&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
 ##  $ y        : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-</div>
-<div id="we-totally-have-45211-observations-15-input-variables-and-1-output-variables-y." class="section level4">
-<h4>We totally have 45211 observations, 15 input variables and 1 output variables (y).</h4>
+<p>We totally have 45211 observations, 15 input variables and 1 output variables (y).</p>
 <pre class="r"><code>head(dat, 3)</code></pre>
 <pre><code>##            job marital education balance age housing loan contact day
 ## 1   management married  tertiary    2143  58       Y    N unknown   5
@@ -235,29 +263,26 @@ str(dat)</code></pre>
 ## 3   may       76        1    -1        0  unknown N</code></pre>
 <hr />
 </div>
-</div>
-<div id="b.-random-forest-model" class="section level3">
-<h3>B. Random Forest Model</h3>
+<div id="b.-random-forest-model" class="section level4">
+<h4>B. Random Forest Model</h4>
 <ul>
 <li>Using h2o package</li>
 <li>Using XGBoost package</li>
 <li>Using randomForest package</li>
 </ul>
-</div>
-<div id="using-h2o-package" class="section level3">
-<h3>1. Using h2o package</h3>
-<div id="step1-initiate-h2o-package" class="section level4">
-<h4>Step1: Initiate h2o package</h4>
+<div id="using-h2o-package" class="section level5">
+<h5>1. Using h2o package</h5>
+<p>Step1: Initiate h2o package</p>
 <pre class="r"><code>h2o.init(nthreads=-1)</code></pre>
 <pre><code>##  Connection successful!
 ## 
 ## R is connected to the H2O cluster: 
-##     H2O cluster uptime:         1 hours 12 minutes 
+##     H2O cluster uptime:         1 hours 30 minutes 
 ##     H2O cluster version:        3.10.4.6 
 ##     H2O cluster version age:    1 month and 7 days  
 ##     H2O cluster name:           H2O_started_from_R_Eve_nau333 
 ##     H2O cluster total nodes:    1 
-##     H2O cluster total memory:   3.13 GB 
+##     H2O cluster total memory:   3.16 GB 
 ##     H2O cluster total cores:    4 
 ##     H2O cluster allowed cores:  4 
 ##     H2O cluster healthy:        TRUE 
@@ -266,26 +291,20 @@ str(dat)</code></pre>
 ##     H2O Connection proxy:       NA 
 ##     H2O Internal Security:      FALSE 
 ##     R Version:                  R version 3.4.0 (2017-04-21)</code></pre>
-</div>
-<div id="step2-load-data-set" class="section level4">
-<h4>Step2: Load data set</h4>
+<p>Step2: Load data set</p>
 <pre class="r"><code>dx &lt;- h2o.importFile(&quot;bank.csv&quot;)</code></pre>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
   |                                                                       
   |=================================================================| 100%</code></pre>
-</div>
-<div id="step3-split-into-training-and-test-data-sets-h2o-will-automatically-shuffle-and-generalize-our-data" class="section level4">
-<h4>Step3: Split into training and test data sets (<em>h2o will automatically shuffle and generalize our data</em>)</h4>
+<p>Step3: Split into training and test data sets (<em>h2o will automatically shuffle and generalize our data</em>)</p>
 <pre class="r"><code>dx_split &lt;- h2o.splitFrame(dx, ratios = 0.6, seed = 123)
 dx_train &lt;- dx_split[[1]]
 dx_test &lt;- dx_split[[2]]
 
 Xnames &lt;- names(dx_train)[which(names(dx_train)!=&quot;y&quot;)]</code></pre>
-</div>
-<div id="step4-apply-a-random-forest-model" class="section level4">
-<h4>Step4: Apply a random forest model</h4>
+<p>Step4: Apply a random forest model</p>
 <pre class="r"><code>#With 100 trees
 system.time({
   md_h2o1 &lt;- h2o.randomForest(x = Xnames, y = &quot;y&quot;, training_frame = dx_train, ntrees = 100)
@@ -294,23 +313,23 @@ system.time({
   |                                                                       
   |                                                                 |   0%
   |                                                                       
-  |=                                                                |   2%
+  |==                                                               |   3%
   |                                                                       
-  |======                                                           |  10%
+  |========                                                         |  12%
   |                                                                       
-  |==========                                                       |  16%
+  |============                                                     |  18%
   |                                                                       
-  |==============                                                   |  21%
+  |===============                                                  |  23%
   |                                                                       
-  |===================                                              |  29%
+  |============================                                     |  43%
   |                                                                       
-  |==================================                               |  53%
+  |==============================================                   |  70%
   |                                                                       
-  |====================================================             |  80%
+  |============================================================     |  93%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.30    0.00    9.22</code></pre>
+##    0.25    0.02    8.58</code></pre>
 <pre class="r"><code>#With 200 trees
 system.time({
   md_h2o2 &lt;- h2o.randomForest(x = Xnames, y = &quot;y&quot;, training_frame = dx_train, ntrees = 200)
@@ -319,29 +338,31 @@ system.time({
   |                                                                       
   |                                                                 |   0%
   |                                                                       
-  |====                                                             |   6%
+  |===                                                              |   4%
   |                                                                       
   |=====                                                            |   8%
   |                                                                       
   |=======                                                          |  10%
   |                                                                       
-  |============                                                     |  18%
+  |==========                                                       |  15%
   |                                                                       
-  |====================                                             |  31%
+  |==================                                               |  28%
   |                                                                       
-  |============================                                     |  43%
+  |=========================                                        |  39%
   |                                                                       
-  |====================================                             |  56%
+  |==================================                               |  52%
   |                                                                       
-  |=========================================                        |  63%
+  |=====================================                            |  57%
   |                                                                       
-  |=================================================                |  76%
+  |=============================================                    |  69%
   |                                                                       
-  |==========================================================       |  90%
+  |======================================================           |  83%
+  |                                                                       
+  |==============================================================   |  96%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.42    0.02   14.76</code></pre>
+##     0.4     0.0    15.2</code></pre>
 <pre class="r"><code>#With 300 trees
 system.time({
   md_h2o3 &lt;- h2o.randomForest(x = Xnames, y = &quot;y&quot;, training_frame = dx_train, ntrees = 300)
@@ -356,78 +377,62 @@ system.time({
   |                                                                       
   |=====                                                            |   7%
   |                                                                       
-  |=======                                                          |  11%
+  |======                                                           |   9%
   |                                                                       
-  |=============                                                    |  20%
+  |===========                                                      |  17%
   |                                                                       
-  |===================                                              |  29%
+  |================                                                 |  25%
   |                                                                       
-  |=========================                                        |  38%
+  |======================                                           |  34%
   |                                                                       
-  |==========================                                       |  40%
+  |===========================                                      |  41%
   |                                                                       
-  |================================                                 |  49%
+  |=================================                                |  50%
   |                                                                       
-  |======================================                           |  58%
+  |=======================================                          |  59%
   |                                                                       
-  |============================================                     |  67%
+  |============================================                     |  68%
   |                                                                       
-  |=================================================                |  76%
+  |==================================================               |  77%
   |                                                                       
-  |=======================================================          |  85%
+  |========================================================         |  86%
   |                                                                       
-  |=============================================================    |  94%
+  |==============================================================   |  95%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.25    0.00   18.99</code></pre>
-</div>
-<div id="step5-prediction-auc" class="section level4">
-<h4>Step5: Prediction &amp; AUC</h4>
+##    0.28    0.00   19.27</code></pre>
+<p>Step5: Prediction &amp; AUC</p>
 <pre class="r"><code>#AUC for 100 trees
 auc_h2o1 &lt;- h2o.auc(h2o.performance(md_h2o1, dx_test))
 auc_h2o1</code></pre>
-<pre><code>## [1] 0.9313322</code></pre>
+<pre><code>## [1] 0.9314315</code></pre>
 <pre class="r"><code>#AUC for 200 trees
 auc_h2o2 &lt;- h2o.auc(h2o.performance(md_h2o2, dx_test))
 auc_h2o2</code></pre>
-<pre><code>## [1] 0.9319512</code></pre>
+<pre><code>## [1] 0.9316806</code></pre>
 <pre class="r"><code>#AUC for 300 trees
 auc_h2o3 &lt;- h2o.auc(h2o.performance(md_h2o3, dx_test))
 auc_h2o3</code></pre>
-<pre><code>## [1] 0.932144</code></pre>
+<pre><code>## [1] 0.9319108</code></pre>
 <hr />
 </div>
 </div>
-<div id="brief-conclusion-for-h2o-package" class="section level3">
-<h3>Brief conclusion for h2o package</h3>
-<div id="section" class="section level4">
-<h4></h4>
-<hr />
-</div>
-</div>
-<div id="using-xgboost-package" class="section level3">
-<h3>2. Using XGBoost package</h3>
-<div id="step1-load-our-data-set" class="section level4">
-<h4>Step1: Load our data set</h4>
+<div id="using-xgboost-package" class="section level4">
+<h4>2. Using XGBoost package</h4>
+<p>Step1: Load our data set</p>
 <pre class="r"><code>d &lt;- read_csv(&quot;bank.csv&quot;)</code></pre>
-</div>
-<div id="step2-shuffle-our-data-and-split-into-training-and-test-data-set" class="section level4">
-<h4>Step2: Shuffle our data and split into training and test data set</h4>
+<p>Step2: Shuffle our data and split into training and test data set</p>
 <pre class="r"><code>set.seed(123)
 N &lt;- nrow(d)
 idx &lt;- sample(1:N, 0.6*N)
 d_train &lt;- d[idx,]
 d_test &lt;- d[-idx,]</code></pre>
-</div>
-<div id="step3-sparse-our-original-data-to-make-categorical-features-become-numeric-features" class="section level4">
-<h4>Step3: Sparse our original data to make categorical features become numeric features</h4>
+<p>Step3: Sparse our original data to make categorical features become numeric features</p>
 <pre class="r"><code>X &lt;- Matrix::sparse.model.matrix(y ~ . - 1, data = d)
 X_train &lt;- X[idx,]
 X_test &lt;- X[-idx,]</code></pre>
-</div>
-<div id="step4-apply-random-forest-model" class="section level4">
-<h4>Step4: Apply random forest model</h4>
+<p>Step4: Apply random forest model</p>
 <pre class="r"><code>#Build 100 trees
 system.time({
   n_proc &lt;- parallel::detectCores()
@@ -439,7 +444,7 @@ system.time({
 })</code></pre>
 <pre><code>## [1]  train-rmse:0.398893</code></pre>
 <pre><code>##    user  system elapsed 
-##    5.23    0.51    2.28</code></pre>
+##    4.77    0.55    2.23</code></pre>
 <pre class="r"><code>#Build 200 trees
 system.time({
   n_proc &lt;- parallel::detectCores()
@@ -451,7 +456,7 @@ system.time({
 })</code></pre>
 <pre><code>## [1]  train-rmse:0.399602</code></pre>
 <pre><code>##    user  system elapsed 
-##    9.92    1.62    4.68</code></pre>
+##   10.28    1.22    4.65</code></pre>
 <pre class="r"><code>#Build 300 trees
 system.time({
   n_proc &lt;- parallel::detectCores()
@@ -463,10 +468,8 @@ system.time({
 })</code></pre>
 <pre><code>## [1]  train-rmse:0.398487</code></pre>
 <pre><code>##    user  system elapsed 
-##   16.29    2.08    6.95</code></pre>
-</div>
-<div id="step5-make-prediction-and-calculate-auc" class="section level4">
-<h4>Step5: Make prediction and calculate AUC</h4>
+##   15.66    2.01    7.78</code></pre>
+<p>Step5: Make prediction and calculate AUC</p>
 <pre class="r"><code>#AUC for 100 trees
 phat_xgboost1 &lt;- predict(md_xgboost1, newdata = X_test)
 rocr_pred_xgboost1 &lt;- prediction(phat_xgboost1, d_test$y)
@@ -487,22 +490,16 @@ AUC_xgboost3</code></pre>
 <pre><code>## [1] 0.9042339</code></pre>
 <hr />
 </div>
-</div>
-<div id="using-randomforest-package" class="section level3">
-<h3>3. Using randomForest package</h3>
-<div id="step1-load-our-data-set-1" class="section level4">
-<h4>Step1: Load our data set</h4>
+<div id="using-randomforest-package" class="section level4">
+<h4>3. Using randomForest package</h4>
+<p>Step1: Load our data set</p>
 <pre class="r"><code>dat &lt;- read.csv(&quot;bank.csv&quot;)
 dat$y &lt;- as.factor(dat$y)</code></pre>
-</div>
-<div id="step2-split-our-data-into-training-and-test-data-set" class="section level4">
-<h4>Step2: Split our data into training and test data set</h4>
+<p>Step2: Split our data into training and test data set</p>
 <pre class="r"><code>train_sample = sample(nrow(dat), size = nrow(dat)*0.6)
 train_dat = dat[train_sample,]
 test_dat = dat[-train_sample,]</code></pre>
-</div>
-<div id="step3-apply-random-forest-model" class="section level4">
-<h4>Step3: Apply random forest model</h4>
+<p>Step3: Apply random forest model</p>
 <pre class="r"><code>#Build 100 trees
 system.time({
   md_rf1 &lt;- randomForest(y=train_dat$y, x = train_dat[, -ncol(train_dat)],
@@ -511,7 +508,7 @@ system.time({
 
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##    4.51    0.07    4.61</code></pre>
+##    5.12    0.03    5.16</code></pre>
 <pre class="r"><code>md_rf1</code></pre>
 <pre><code>## 
 ## Call:
@@ -538,7 +535,7 @@ system.time({
 
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##    8.51    0.20    8.78</code></pre>
+##    9.34    0.10    9.48</code></pre>
 <pre class="r"><code>md_rf2</code></pre>
 <pre><code>## 
 ## Call:
@@ -565,7 +562,7 @@ system.time({
 
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   11.56    0.38   11.95</code></pre>
+##   11.78    0.28   12.05</code></pre>
 <pre class="r"><code>md_rf3</code></pre>
 <pre><code>## 
 ## Call:
@@ -584,9 +581,7 @@ system.time({
 ##       N   Y class.error
 ## N 15487 506  0.03163884
 ## Y  1137 955  0.54349904</code></pre>
-</div>
-<div id="step4-check-variable-importance" class="section level4">
-<h4>Step4: Check variable importance</h4>
+<p>Step4: Check variable importance</p>
 <pre class="r"><code>varImpPlot(md_rf1,type=2)</code></pre>
 <p><img src="data:image/png;base64,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" width="672" /></p>
 <pre class="r"><code>varImpPlot(md_rf2,type=2)</code></pre>
