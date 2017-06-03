@@ -1,0 +1,247 @@
+---
+title: "Machine Learning Week 9 Report"
+author: "Yuan Yi Chen (Eve)"
+date: "2017<e6><92><9f><b4>5<e6><9c><88>26<e6><e9><9b><93><91><99>"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r, include = F}
+setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
+```
+#**Agenda**
+
+###**A. Brief introduction of What I learn this week**
+  * ####Before this Week: 
+    + Know how to use **glm** and **h20** functions to run logistic regression
+    + Know in what circumstance should I apply logistic regression model
+  * ####After this Week:
+    + Know how to use **glmnet**, **h20 package** and **XGBoost package** functions to run logistic regression model
+    + Know in what circumstance should I apply random forest model
+  * ####Next Week's Plan:
+    + Study random forest model - run with packages **RandomForest**, **h2o** and **XGBoost**
+    + Know how to run random forest model by Python
+    
+###**B. Logistic Regression: Using R & H2O**
+  * ####R - glmnet (w/ lasso & w/o lasso)
+  * ####R - h2o    (w/ lasso & w/o lasso)
+  
+
+***
+
+###A. Brief introduction of What I learn this week
+
+####First, I have already learnt about the linear regression. It's usually applied within the numeric variables. However, we may have categorical data. For example, in medical data, we may record if this patient has a disease or not (i.e. Yes = 1, No = 0).
+
+
+Models           | Dependent Variables | Independent Variables
+-----------------|-----------------|------------------
+Linear Regression|Numeric          |Numeric
+Logistic Regression       |Categorical      |Numeric
+Classification Trees|Categorical   | Categorical
+
+####In this circumstance, classification can do a great help. Therefore, I would like to use a **bank marketing** dataset to show my findings in both the logistic regression and random forest model. Details like the auc rate, the processing speed and the hyperparameters will be mentioned as well.
+
+
+
+####In order to double check our outputs, we utilize **R**, **H2O** and **XGBoost** to run our models. Before we begin our analysis, let's take a look about our data set first.
+
+```{r, include = F}
+###1. Setup
+#Remove Objects
+rm(list=ls())
+
+#Clear Memory
+gc(reset=TRUE)
+
+#Set Working Directory
+setwd("C:/Users/Eve/Dropbox/UCLA Files/Courses/497 Individual Study")
+```
+
+###1. Load Packages
+```{r, message = F}
+library(readr)   #Use to read data
+library(glmnet)  #Use to apply logistic regression
+library(ROCR)    #Use to calcuate AUC
+library(h2o)     #Use to run logistic regression and random forest (help transfer R codes to Java)
+library(xgboost) #Use to run random forest model
+```
+
+###2. Load data set
+####This **bank marketing** data set is provided by a Portuguese banking institution. It takes records on every phone calls they make to promote their product - term deposit. Our goal is to predict if a customer will subsribe a product after they make phone calls.
+
+```{r}
+dat <- read.csv("bank.csv")
+str(dat)
+```
+
+####We totally have 45211 observations, 15 input variables and 1 output variables (y).
+
+```{r}
+head(dat, 3)
+```
+
+
+
+***
+
+###B. Logistic Regression: Using R & H2O
+
+###Logistic Regression: Using R - glmnet
+####During the process of the logistic regression, we may want to minimize the cost function. Thus, we tune the **lasso** and **lambda** hyperparameters to do a regularization. 
+
+* ####Logistic Regression with lasso regularization
+* ####Logistic Regression without lasso regularization
+
+***
+
+###With Lasso Regularization
+####1. Load data set
+```{r}
+d <- read_csv("bank.csv")
+```
+
+####2. Shuffle our data and split into training and test data sets
+```{r}
+set.seed(123)
+N <- nrow(d)
+idx <- sample(1:N, 0.6*N)
+d_train <- d[idx,]
+d_test <- d[-idx,]
+```
+
+####3. Make sparse matrix and split it into training and test data sets.
+#####*Notes*: The reason why to sparse our data is because **glmnet** function can only read numeric data. Besides, since there are some categorical variables in our data set, we can encode those variables to numeric variables.
+```{r}
+X <- Matrix::sparse.model.matrix(y~. -1, data = d)
+X_train <- X[idx,]
+X_test <- X[-idx,]
+```
+
+####4. Apply the logistic model (with lasso)
+```{r}
+system.time({model1 <- glmnet( X_train, d_train$y, lambda = 0, alpha = 1, family = "binomial")
+})
+```
+
+####5. Prediction & AUC
+```{r}
+phat1 <- predict(model1, newx = X_test, type = "response")
+pred1 <- prediction(phat1, d_test$y)
+auc1 <- performance(pred1, "auc")@y.values[[1]]
+auc1
+```
+
+***
+
+###Without Lasso Regularization 
+####1. Apply the logistic regression (without lasso)
+```{r}
+system.time({model2 <- glmnet( X_train, d_train$y, lambda = 1, alpha = 0, family = "binomial")
+})
+```
+
+####2. Predict & AUC
+```{r}
+phat2 <- predict(model2, newx = X_test, type = "response")
+pred2 <- prediction(phat2, d_test$y)
+auc2 <- performance(pred2, "auc")@y.values[[1]]
+auc2
+```
+
+***
+
+###Brief conclusion
+####While using logistic regression via glmnet package, we can clearly see that the auc increases as we use lasso to minimize our cost function.
+
+
+***
+
+###Logistic Regression: Using H2O
+####We will do the same thing to tune the hyperparameters to minimize the cost function. 
+
+* ####Logistic Regression with lasso regularization
+* ####Logistic Regression without lasso regularization
+
+***
+
+###With Lasso Regularization
+####1. Initiate our h20 package
+```{r, message = F}
+h2o.init(nthreads=-1)
+```
+
+####2. Load our data set by using h20.importFile
+#####Notes: It is a mandatory step in h20 package. We can only use this function to load data.
+```{r, message = F}
+dx <- h2o.importFile("bank.csv")
+```
+
+####3. Shuffle our data and split into training and test data set
+#####Notes: We do not need to make a sparse matrix or any other normalization because h20 package has already done that for us.
+```{r}
+dx_split <- h2o.splitFrame(dx, ratios = 0.6, seed = 123)
+dx_train <- dx_split[[1]]
+dx_test <- dx_split[[2]]
+Xnames <- names(dx_train)[which(names(dx_train)!="y")]
+```
+
+####4. Apply logistic regression model with lasso
+```{r}
+system.time({model3 <- h2o.glm(x = Xnames, y = "y", training_frame = dx_train, family = "binomial", alpha = 1, lambda = 0)
+})
+
+```
+
+####5. Calculate auc for logistic regression model 
+```{r}
+h2o.auc(h2o.performance(model3, dx_test))
+```
+####6. See the confusion matrix of our prediction
+```{r}
+h2o.confusionMatrix(h2o.performance(model3, dx_test))
+```
+
+
+***
+
+###Without Lasso Regularization
+
+####1. Apply logistic regression model (without lasso)
+```{r}
+system.time({model4 <- h2o.glm(x = Xnames, y = "y", training_frame = dx_train, family = "binomial", alpha = 0, lambda = 1)
+})
+```
+
+####2. Calculate auc for logistic regression model
+```{r}
+h2o.auc(h2o.performance(model4, dx_test))
+```
+
+####3. See the confusion matrix of our prediction
+```{r}
+h2o.confusionMatrix(h2o.performance(model4, dx_test))
+```
+***
+
+###Brief conclusion - Compare glmnet & h2o packages
+* ####As for the processing time, we can easily see that glmnet performs slightly better than h2o in this data set
+* ####As for the auc, if we insist to use lasso within both the functions, we find that h2o performs higher auc in comparison with glmnet package.
+
+Packages         | AUC   | Processing Time (/sec) 
+-----------------|-------|------------------
+glmnet (w/ lasso)|0.9037  | 0.23
+glmnet (w/o lasso)| 0.875|0.18
+h2o (w/lasso)    |0.9041  |1.51
+h2o (w/o lasso)  |0.8687  |0.52
+
+
+
+
+
+
+
+***
+
