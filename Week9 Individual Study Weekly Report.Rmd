@@ -117,8 +117,11 @@ head(dat, 3)
 
 #####1. Using h2o package
 Step1: Initiate h2o package
-```{r}
+```{r, message = F}
 h2o.init(nthreads=-1)
+```
+```{r}
+h2o.no_progress()
 ```
 
 Step2: Load data set
@@ -315,32 +318,40 @@ md_rf3
 
 
 
-Step4: Check variable importance
+Step4: Check variable importance (optional)
 ```{r}
 varImpPlot(md_rf1,type=2)
-varImpPlot(md_rf2,type=2)
-varImpPlot(md_rf3,type=2)
 ``` 
+We may also see that the feature "duration"is the most important one. Therefore, while we're considering which features to be applied to our random forest model, we can firstly build a basic random forest model. Then, **varImpPlot** function can help us identify which features have greater influence to our model. This step can help optimize the model.
 
 ***
 
 ###C. Comparisons
-####Compare random forest with logistic model 
-* #####As for the processing time, we can easily see that glmnet performs slightly better than h2o in this data set
-* #####As for the auc, if we insist to use lasso within both the functions, we find that h2o performs higher auc in comparison with glmnet package.
+####Compare random forest with logistic model within different packages
 
 Packages         | AUC   | Processing Time (/sec) 
 -----------------|-------|------------------
-glmnet (w/ lasso)|0.9037  | 0.23
-glmnet (w/o lasso)| 0.875|0.18
-h2o (w/lasso)    |0.9041  |1.51
-h2o (w/o lasso)  |0.8687  |0.52
+h2o-rf (100 trees) | 0.9314315 | 9.22
+h2o-rf (200 trees) | 0.9316806 | 14.76
+h2o-rf (300 trees) | 0.9319108 | 18.99
+XGBoost-rf (100 trees) | 0.9018877 | 2.28
+XGBoost-rf (200 trees) | 0.8982503 | 4.68
+XGBoost-rf (300 trees) | 0.9042339 | 6.95
+randomForest (100 trees) | Error rate = 9.23% | 4.61
+randomForest (200 trees) | Error rate = 9.15% | 8.78
+randomForest (300 trees) | Error rate = 9.08% | 11.95
+glmnet-glm (w/ lasso)|0.9037  | 0.23
+glmnet-glm (w/o lasso)| 0.875|0.18
+h2o-glm (w/lasso)    |0.9041  |1.51
+h2o-glm (w/o lasso)  |0.8687  |0.52
+
+* ####We can see once we increase the amount of trees, in most cases, the accuracy may go up. However, it may take a bit longer time to train the models.
+* ####If we control our method to random forest, we can clearly see the XGBoost package can efficiently train our model (although it's accuracy is worse that other two packages)
+* ####If we compare different methods with different packages, we can also see that, in general, random forest model performs better accuracy than logistic model.  
 
 
 
-
-
-
+###This is the end of the weekly report. Thank you for your reading! :)
 
 ***
 
